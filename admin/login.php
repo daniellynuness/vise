@@ -18,9 +18,26 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once __DIR__ . '/auth.php';
+
+if (($_SESSION['auth'] ?? false) === true) {
+	header('Location: /admin/');
+	exit;
+}
+
+if (isset($_GET['google'])) {
+	googleAuthorizationUrl();
+}
+
+$error = $_SESSION['auth_error'] ?? '';
+unset($_SESSION['auth_error']);
+
+if (!googleIsConfigured() && $error === '') {
+	$error = 'A autenticação Google ainda não foi configurada pelo administrador.';
+}
 
 $contents = file_get_contents("tpl/login.tpl");
+$contents = str_replace('_ERROR_', $error === '' ? '' : '<div class="alert alert-danger" role="alert">' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8') . '</div>', $contents);
 echo $contents;
 
 ?>

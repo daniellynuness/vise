@@ -18,33 +18,15 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once __DIR__ . '/auth.php';
+requireAdmin();
+
 date_default_timezone_set('America/Sao_Paulo');
 
 define("CONFIG_FILE", "../links.ini");
-define("ACCESS_CODE", "CHANGEME");
-
 if (!file_exists(CONFIG_FILE)) {
 	$fh = fopen(CONFIG_FILE, "w");
 	fclose($fh);
-}
-
-if ($_SESSION["auth"] == false) {
-	if ($_POST["password"]) {
-		$pw = $_POST["password"];
-		if ($pw == ACCESS_CODE) {
-			$_SESSION["auth"] = true;
-			header("Location: /admin");
-		} else {
-			$_SESSION["auth"] = false;
-		}
-	}
-
-	if ($_SESSION["auth"] == false)
-		header("Location: /admin/login.php");
-	else
-		header("Location: /admin/");
-	exit;
 }
 
 function validHandle($handle) {
@@ -101,12 +83,13 @@ if ($_POST) {
 		if ($message == "") {
 			// New links will use INI sections instead
 			$now = date('Y-m-d H:i:s');
+			$createdBy = addcslashes((string) ($_SESSION['user_email'] ?? 'unknown'), "\\'");
 
 			$section = "[$handle]" . "\n" .
 				"destination = '$dest'" . "\n" .
 				"created_at = $now"   . "\n" .
 				"updated_at = $now"   . "\n" .
-				"created_by = admin"  . "\n";
+				"created_by = '$createdBy'"  . "\n";
 
 			$fh = fopen(CONFIG_FILE, "a");
 			if ($fh == false)
@@ -136,6 +119,7 @@ foreach ($links as $key => $value) {
 				<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
 				<td>'. $value["destination"] .'</td>
 				<td>'. $value["updated_at"] .'</td>
+				<td>'. htmlspecialchars((string) ($value["created_by"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
 			<!--
 			<td><a class="btn btn-xs btn-info" href="#" role="button">Editar</a></td>
 			<td><a class="btn btn-xs btn-danger" href="#" role="button">Excluir</a></td>
@@ -145,9 +129,10 @@ foreach ($links as $key => $value) {
 	} else {
 	array_push($entries, 
 		'
-        	<tr>
-          		<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
-	            <td>'. $value .'</td>
+		<tr>
+				<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
+				<td>'. $value .'</td>
+				<td>-</td>
 			</tr>
 		');
 	}
@@ -163,6 +148,7 @@ if (empty($message)) {
 }
 
 $contents = str_replace("_LINKS_", $with, $contents);
+$contents = str_replace("_USER_EMAIL_", htmlspecialchars((string) ($_SESSION['user_email'] ?? ''), ENT_QUOTES, 'UTF-8'), $contents);
 
 echo $contents;
 

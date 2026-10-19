@@ -18,10 +18,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-session_start();
-
-if ($_SESSION["auth"] == false)
-  header("location:/admin/");
+require_once __DIR__ . '/auth.php';
+requireAdmin();
 
 $with = '';
 $contents = file_get_contents("tpl/add.tpl");

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,15 +17,8 @@
       </header>
 
       <div style="width: 20em;">
-          <form action="." method="post">
-            <div class="mb-3">
-              <label for="dest" class="form-label">Código de acesso</label>
-              <input type="password" class="form-control" id="password" name="password">
-            </div>
-            <div class="mb-3">
-              <input type="submit" class="btn btn-primary" value="Entrar">
-            </div>
-          </form>
+          _ERROR_
+          <a class="btn btn-primary" href="login.php?google=1">Entrar com Google</a>
       </div>
 
     </div>

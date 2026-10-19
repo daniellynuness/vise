@@ -18,8 +18,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-session_start();
+require_once __DIR__ . '/auth.php';
 session_destroy();
-header("location:.");
+header("Location: /admin/login.php");
 
 ?>

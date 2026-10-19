@@ -59,11 +59,18 @@ cd /var/www/vise
 touch links.ini
 ```
 
-7. Edit the `admin/login.php` file and set an access code in the following line:
+7. Configure the Google OAuth credentials as environment variables. Create a Web application OAuth client in [Google Cloud Console](https://console.cloud.google.com/apis/credentials) and add the exact callback URL to the authorized redirect URIs:
 
-```php
-define("ACCESS_CODE", "CHANGEME");
+```shell
+export GOOGLE_CLIENT_ID='your-client-id.apps.googleusercontent.com'
+export GOOGLE_CLIENT_SECRET='your-client-secret'
+export GOOGLE_REDIRECT_URI='https://domain.com/admin/oauth2callback.php'
+export GOOGLE_ALLOWED_DOMAIN='mentebinaria.com.br'
+# Or use a comma-separated list instead of GOOGLE_ALLOWED_DOMAIN:
+# export GOOGLE_ALLOWED_EMAILS='admin@example.com,owner@example.com'
 ```
+
+The web server must pass these variables to PHP. Do not commit the client secret to this repository. The login accepts only verified Google accounts matching `GOOGLE_ALLOWED_DOMAIN` or `GOOGLE_ALLOWED_EMAILS`.
 
 8. Restart httpd:
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,6 +19,7 @@ _MESSAGE_
 
   <ul class="nav nav-pills">
     <li class="nav-item"><a href="." class="nav-link active" aria-current="page">Links</a></li>
+    <li class="nav-item"><span class="nav-link disabled">_USER_EMAIL_</span></li>
     <li class="nav-item"><a href="logout.php" class="nav-link">Sair</a></li>
   </ul>
 </header>
@@ -32,6 +33,7 @@ _MESSAGE_
                 <th>Handle</th>
                 <th>URL de destino</th>
                 <th>Última atualização</th>
+                <th>Criado por</th>
               </tr>
             </thead>
             <tbody>
