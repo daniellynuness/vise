@@ -18,7 +18,7 @@
 
       <div style="width: 20em;">
           _ERROR_
-          <a class="btn btn-primary" href="login.php?google=1">Entrar com Google</a>
+          <a class="btn btn-primary" href="login.php?google=1">Login</a>
       </div>
 
     </div>
