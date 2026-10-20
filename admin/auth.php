@@ -165,7 +165,7 @@ function completeGoogleLogin(string $code, string $state): void
 	$user = googleUserInfo($tokens['access_token']);
 	$email = strtolower(trim((string) ($user['email'] ?? '')));
 
-	if ($email === '' || ($user['verified_email'] ?? false) !== true) {
+	if ($email === '' || ($user['email_verified'] ?? false) !== true) {
 		throw new RuntimeException('A conta Google não possui e-mail verificado.');
 	}
 
@@ -188,4 +188,3 @@ function requireAdmin(): void
 		exit;
 	}
 }
-
