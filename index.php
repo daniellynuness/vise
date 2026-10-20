@@ -21,7 +21,7 @@
 $path = trim($_SERVER['REQUEST_URI'], "/");
 $ini = parse_ini_file('links.ini', true);
 
-if ($ini == false) {
+if ($ini === false) {
 	die("Could not open .ini");
 }
 

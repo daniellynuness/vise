@@ -105,7 +105,7 @@ if ($_POST) {
 $path = trim($_SERVER['REQUEST_URI'], "/");
 $links = parse_ini_file(CONFIG_FILE, true);
 
-if ($links == false) {
+if ($links === false) {
 	die("Could not open links.ini");
 }
 
