@@ -21,6 +21,9 @@
 require_once __DIR__ . '/auth.php';
 requireAdmin();
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+
 date_default_timezone_set('America/Sao_Paulo');
 
 define("CONFIG_FILE", "../links.ini");
@@ -117,7 +120,7 @@ foreach ($links as $key => $value) {
 		array_push($entries, 
 		'
 			<tr>
-				<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
+				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
 				<td>'. $value["destination"] .'</td>
 				<td>'. $value["updated_at"] .'</td>
 				<td>'. htmlspecialchars((string) ($value["clicks"] ?? 0), ENT_QUOTES, 'UTF-8') .'</td>
@@ -132,7 +135,7 @@ foreach ($links as $key => $value) {
 	array_push($entries, 
 		'
 		<tr>
-				<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
+				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
 				<td>'. $value .'</td>
 				<td>-</td>
 			</tr>
