@@ -93,7 +93,8 @@ if ($_POST) {
 				"created_at = $now"   . "\n" .
 				"updated_at = $now"   . "\n" .
 				"clicks = 0"           . "\n" .
-				"created_by = '$createdBy'"  . "\n";
+				"created_by = '$createdBy'"  . "\n" .
+				"updated_by = '$createdBy'"  . "\n";
 
 			$fh = fopen(CONFIG_FILE, "a");
 			if ($fh == false)
@@ -121,14 +122,12 @@ foreach ($links as $key => $value) {
 		'
 			<tr>
 				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
-				<td>'. $value["destination"] .'</td>
-				<td>'. $value["updated_at"] .'</td>
+				<td>'. htmlspecialchars((string) ($value["destination"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
+				<td>'. htmlspecialchars((string) ($value["updated_at"] ?? '-'), ENT_QUOTES, 'UTF-8') .'</td>
 				<td>'. htmlspecialchars((string) ($value["clicks"] ?? 0), ENT_QUOTES, 'UTF-8') .'</td>
 				<td>'. htmlspecialchars((string) ($value["created_by"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
-			<!--
-			<td><a class="btn btn-xs btn-info" href="#" role="button">Editar</a></td>
-			<td><a class="btn btn-xs btn-danger" href="#" role="button">Excluir</a></td>
-			-->
+				<td>'. htmlspecialchars((string) ($value["updated_by"] ?? $value["created_by"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
+				<td><a class="btn btn-sm btn-secondary" href="edit.php?handle='. urlencode($key) .'" role="button">Editar</a></td>
 			</tr>
 		');
 	} else {
@@ -136,8 +135,12 @@ foreach ($links as $key => $value) {
 		'
 		<tr>
 				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
-				<td>'. $value .'</td>
+				<td>'. htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') .'</td>
 				<td>-</td>
+				<td>0</td>
+				<td>-</td>
+				<td>-</td>
+				<td><a class="btn btn-sm btn-secondary" href="edit.php?handle='. urlencode($key) .'" role="button">Editar</a></td>
 			</tr>
 		');
 	}

@@ -36,6 +36,8 @@ _MESSAGE_
                 <th>Última atualização</th>
                 <th>Cliques</th>
                 <th>Criado por</th>
+                <th>Atualizado por</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
