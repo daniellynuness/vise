@@ -27,6 +27,12 @@ header('Pragma: no-cache');
 date_default_timezone_set('America/Sao_Paulo');
 
 define("CONFIG_FILE", "../links.ini");
+$shortenerBaseUrl = trim((string) getenv('SHORTENER_BASE_URL'));
+if ($shortenerBaseUrl === '') {
+	$shortenerBaseUrl = 'https://menteb.in';
+}
+$shortenerBaseUrl = rtrim($shortenerBaseUrl, '/');
+
 if (!file_exists(CONFIG_FILE)) {
 	$fh = fopen(CONFIG_FILE, "w");
 	fclose($fh);
@@ -121,7 +127,7 @@ foreach ($links as $key => $value) {
 		array_push($entries, 
 		'
 			<tr>
-				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
+				<td><a href="'. htmlspecialchars($shortenerBaseUrl . '/' . rawurlencode($key), ENT_QUOTES, 'UTF-8') .'" target="_blank" rel="noopener noreferrer">'. htmlspecialchars($key, ENT_QUOTES, 'UTF-8') .'</a></td>
 				<td>'. htmlspecialchars((string) ($value["destination"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
 				<td>'. htmlspecialchars((string) ($value["updated_at"] ?? '-'), ENT_QUOTES, 'UTF-8') .'</td>
 				<td>'. htmlspecialchars((string) ($value["clicks"] ?? 0), ENT_QUOTES, 'UTF-8') .'</td>
@@ -134,7 +140,7 @@ foreach ($links as $key => $value) {
 	array_push($entries, 
 		'
 		<tr>
-				<td><a href="https://menteb.in/'. $key .'" target="_blank" rel="noopener noreferrer">'. $key .'</a></td>
+				<td><a href="'. htmlspecialchars($shortenerBaseUrl . '/' . rawurlencode($key), ENT_QUOTES, 'UTF-8') .'" target="_blank" rel="noopener noreferrer">'. htmlspecialchars($key, ENT_QUOTES, 'UTF-8') .'</a></td>
 				<td>'. htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') .'</td>
 				<td>-</td>
 				<td>0</td>

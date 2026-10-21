@@ -68,6 +68,12 @@ export GOOGLE_REDIRECT_URI='https://domain.com/admin/oauth2callback.php'
 export GOOGLE_ALLOWED_DOMAIN='mentebinaria.com.br'
 # Or use a comma-separated list instead of GOOGLE_ALLOWED_DOMAIN:
 # export GOOGLE_ALLOWED_EMAILS='admin@example.com,owner@example.com'
+
+# Optional: base URL shown for short links in the admin panel.
+# Use the local server while testing:
+export SHORTENER_BASE_URL='http://127.0.0.1:8000'
+# In production, use the public shortener domain instead:
+# export SHORTENER_BASE_URL='https://menteb.in'
 ```
 
 The web server must pass these variables to PHP. Do not commit the client secret to this repository. The login accepts only verified Google accounts matching `GOOGLE_ALLOWED_DOMAIN` or `GOOGLE_ALLOWED_EMAILS`.
