@@ -5,3 +5,7 @@
 	 RewriteCond %{REQUEST_FILENAME} !-d
 	 RewriteRule ^.*$ /index.php [L]
 </IfModule>
+
+<FilesMatch "^(links\.ini|access\.log)$">
+	Require all denied
+</FilesMatch>

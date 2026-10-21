@@ -19,6 +19,7 @@ _MESSAGE_
 
   <ul class="nav nav-pills">
     <li class="nav-item"><a href="." class="nav-link active" aria-current="page">Links</a></li>
+    <li class="nav-item"><a href="accesses.php" class="nav-link">Acessos</a></li>
     <li class="nav-item"><span class="nav-link disabled">_USER_EMAIL_</span></li>
     <li class="nav-item"><a href="logout.php" class="nav-link">Sair</a></li>
   </ul>

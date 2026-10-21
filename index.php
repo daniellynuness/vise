@@ -84,9 +84,36 @@ function recordClick($filename, $path) {
 	return $destination;
 }
 
+function recordAccess($filename, $path, $destination) {
+	$record = [
+		'timestamp' => date('c'),
+		'handle' => $path,
+		'destination' => $destination,
+		'ip' => (string) ($_SERVER['REMOTE_ADDR'] ?? ''),
+		'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 1000),
+		'referer' => substr((string) ($_SERVER['HTTP_REFERER'] ?? ''), 0, 1000),
+	];
+
+	$line = json_encode($record, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	if ($line === false) {
+		return;
+	}
+
+	$fh = fopen($filename, 'ab');
+	if ($fh === false || !flock($fh, LOCK_EX)) {
+		return;
+	}
+
+	fwrite($fh, $line . "\n");
+	fflush($fh);
+	flock($fh, LOCK_UN);
+	fclose($fh);
+}
+
 if (array_key_exists($path, $ini)) {
 	$destination = recordClick('links.ini', $path);
 	if ($destination !== null) {
+		recordAccess(__DIR__ . '/access.log', $path, $destination);
 		header('Location: ' . $destination);
 	} elseif (is_array($ini[$path])) {
 		header('Location: ' . $ini[$path]["destination"]);
