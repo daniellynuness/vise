@@ -89,6 +89,7 @@ if ($_POST) {
 				"destination = '$dest'" . "\n" .
 				"created_at = $now"   . "\n" .
 				"updated_at = $now"   . "\n" .
+				"clicks = 0"           . "\n" .
 				"created_by = '$createdBy'"  . "\n";
 
 			$fh = fopen(CONFIG_FILE, "a");
@@ -119,6 +120,7 @@ foreach ($links as $key => $value) {
 				<td><a href="https://menteb.in/'. $key .'">'. $key .'</a></td>
 				<td>'. $value["destination"] .'</td>
 				<td>'. $value["updated_at"] .'</td>
+				<td>'. htmlspecialchars((string) ($value["clicks"] ?? 0), ENT_QUOTES, 'UTF-8') .'</td>
 				<td>'. htmlspecialchars((string) ($value["created_by"] ?? ''), ENT_QUOTES, 'UTF-8') .'</td>
 			<!--
 			<td><a class="btn btn-xs btn-info" href="#" role="button">Editar</a></td>

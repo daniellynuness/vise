@@ -33,6 +33,7 @@ _MESSAGE_
                 <th>Handle</th>
                 <th>URL de destino</th>
                 <th>Última atualização</th>
+                <th>Cliques</th>
                 <th>Criado por</th>
               </tr>
             </thead>

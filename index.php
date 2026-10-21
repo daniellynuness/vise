@@ -25,9 +25,70 @@ if ($ini === false) {
 	die("Could not open .ini");
 }
 
+function serializeLinks(array $links) {
+	$contents = '';
+
+	foreach ($links as $handle => $link) {
+		if (is_array($link)) {
+			$contents .= "[$handle]\n";
+			foreach ($link as $key => $value) {
+				if ($key === 'clicks') {
+					$contents .= "$key = " . (int) $value . "\n";
+				} else {
+					$escaped = addcslashes((string) $value, "\\'");
+					$contents .= "$key = '$escaped'\n";
+				}
+			}
+			$contents .= "\n";
+		} else {
+			$escaped = addcslashes((string) $link, "\\'");
+			$contents .= "$handle = '$escaped'\n";
+		}
+	}
+
+	return $contents;
+}
+
+function recordClick($filename, $path) {
+	$fh = fopen($filename, 'c+');
+	if ($fh === false || !flock($fh, LOCK_EX)) {
+		return null;
+	}
+
+	rewind($fh);
+	$contents = stream_get_contents($fh);
+	$links = parse_ini_string($contents, true);
+	if ($links === false || !array_key_exists($path, $links)) {
+		flock($fh, LOCK_UN);
+		fclose($fh);
+		return null;
+	}
+
+	if (is_array($links[$path])) {
+		$destination = $links[$path]['destination'];
+	} else {
+		$destination = $links[$path];
+		$links[$path] = array('destination' => $destination);
+	}
+
+	$links[$path]['clicks'] = (int) ($links[$path]['clicks'] ?? 0) + 1;
+	$serialized = serializeLinks($links);
+
+	rewind($fh);
+	ftruncate($fh, 0);
+	fwrite($fh, $serialized);
+	fflush($fh);
+	flock($fh, LOCK_UN);
+	fclose($fh);
+
+	return $destination;
+}
+
 if (array_key_exists($path, $ini)) {
-	// INI section support
-	if (is_array($ini[$path])) {
+	$destination = recordClick('links.ini', $path);
+	if ($destination !== null) {
+		header('Location: ' . $destination);
+	} elseif (is_array($ini[$path])) {
 		header('Location: ' . $ini[$path]["destination"]);
 	} else {
 		header('Location: ' . $ini[$path]);
